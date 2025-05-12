@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio En Vivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ff5e02 0%, #ff915e 100%);
+            color: #fff;
+        }
+        
+        .player-glow {
+            box-shadow: 0 0 15px rgb(255, 136, 0);
+        }
+        
+        .btn-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgb(255, 255, 255);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .wave {
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        .wave-bar {
+            width: 6px;
+            margin: 0 2px;
+            border-radius: 3px;
+            background: #ff5e00;
+        }
+        
+        .schedule-item:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="bg-[#252524] py-4 px-6 shadow-lg">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="text-[#6564f1] mr-2">
+                    <img src="La nuestra logo.png" class="h-16 w-17" fill="none" viewBox="0 0 25 25" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-white">Radio <span class="text-[#ff5e02]">La Nuestra</span></h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-1 md:space-x-6">
+                    <li><a href="#inicio" class="px-2 py-1 md:px-3 md:py-2 rounded hover:bg-[#ff5e02] transition">Inicio</a></li>
+                    <li><a href="#programacion" class="px-2 py-1 md:px-3 md:py-2 rounded hover:bg-[#ff5e02] transition">Programación</a></li>
+                    <li><a href="#nosotros" class="px-2 py-1 md:px-3 md:py-2 rounded hover:bg-[#ff5e02] transition">Nosotros</a></li>
+                    <li><a href="#contacto" class="px-2 py-1 md:px-3 md:py-2 rounded hover:bg-[#ff5e02] transition">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="inicio" class="py-12 md:py-20 px-6">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">¡Estamos <span class="text-[#252524]">Transmitiendo Ahora</span>!</h2>
+                <p class="text-lg md:text-xl text-white-300 mb-10 max-w-2xl mx-auto">Escucha nuestra programación en vivo con la mejor música y contenido exclusivo para ti.</p>
+                
+                <!-- Radio Player -->
+                <div class="max-w-3xl mx-auto bg-[#252524] rounded-xl p-6 player-glow mb-12">
+                    <div class="flex flex-col items-center">
+                        <div class="mb-6 relative">
+                            <div class="w-48 h-48 rounded-full bg-gradient-to-br from-[#e6ac19] to-[#ff3702] flex items-center justify-center">
+                                <div class="w-44 h-44 rounded-full bg-[#1e293b] flex items-center justify-center">
+                                    <div class="text-[#6564f1]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="White">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -top-2 -right-2 bg-red-600 rounded-full w-6 h-6 flex items-center justify-center animate-pulse">
+                                <span class="text-xs font-bold">EN VIVO</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold mb-2">Programa Actual: Los juglares "solo clasicos"</h3>
+                        <p class="text-gray-400 mb-6">Director Mayo Guerra</p>
+                        
+                        <div class="wave mb-6" id="audioWave">
+                            <div class="wave-bar" style="height: 20%"></div>
+                            <div class="wave-bar" style="height: 40%"></div>
+                            <div class="wave-bar" style="height: 60%"></div>
+                            <div class="wave-bar" style="height: 80%"></div>
+                            <div class="wave-bar" style="height: 40%"></div>
+                            <div class="wave-bar" style="height: 60%"></div>
+                            <div class="wave-bar" style="height: 80%"></div>
+                            <div class="wave-bar" style="height: 100%"></div>
+                            <div class="wave-bar" style="height: 80%"></div>
+                            <div class="wave-bar" style="height: 60%"></div>
+                            <div class="wave-bar" style="height: 40%"></div>
+                            <div class="wave-bar" style="height: 20%"></div>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button id="playButton" class="bg-[#ff5e02] hover:bg-[#ffbe19] text-white font-bold py-3 px-6 rounded-full flex items-center btn-pulse">
+                                <i class="fas fa-play mr-2"></i> Reproducir
+                            </button>
+                            <button id="stopButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full flex items-center" disabled>
+                                <i class="fas fa-stop mr-2"></i> Detener
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center">
+                            <span class="mr-2 text-sm">Volumen:</span>
+                            <input type="range" id="volumeControl" min="0" max="100" value="80" class="w-32 accent-[#ff5e02]">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div class="bg-[#252524] rounded-lg p-6">
+                        <div class="text-[#ff5e02] mb-2">
+                            <i class="fas fa-headphones text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-1">1,250+</h3>
+                        <p class="text-gray-400">Oyentes ahora</p>
+                    </div>
+                    <div class="bg-[#252524] rounded-lg p-6">
+                        <div class="text-[#ff5e02] mb-2">
+                            <i class="fas fa-calendar-alt text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-1">24/7</h3>
+                        <p class="text-gray-400">Transmisión continua</p>
+                    </div>
+                    <div class="bg-[#252524] rounded-lg p-6">
+                        <div class="text-[#ff5e02] mb-2">
+                            <i class="fas fa-music text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-1">3+</h3>
+                        <p class="text-gray-400">Programas diarios</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Programación -->
+        <section id="programacion" class="py-12 px-6 bg-[#252524]">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-10 text-center">Nuestra <span class="text-[#ff5e02]">Programación</span></h2>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-[#ffbe19] rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Hoy</h3>
+                            <div class="text-[#252524]">
+                                <span id="currentDate">Lunes 12 de Mayo</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="schedule-item p-4 border-l-4 border-[#6564f1] bg-[#1a1a2e] rounded-r-lg transition-all">
+                                <div class="flex justify-between">
+                                    <span class="font-bold">7:00 AM</span>
+                                    <span class="text-[#6564f1] text-sm">EN VIVO</span>
+                                </div>
+                                <h4 class="text-lg font-medium mt-1">El GALLO</h4>
+                                <p class="text-gray-400 text-sm">Lunes a Viernes</p>
+                            </div>
+                            
+                            <div class="schedule-item p-4 border-l-4 border-gray-600 bg-[#1a1a2e] rounded-r-lg transition-all">
+                                <div class="flex justify-between">
+                                    <span class="font-bold"> 12:00 PM</span>
+                                </div>
+                                <h4 class="text-lg font-medium mt-1">LOS JUGLARES "Solo clasicos"</h4>
+                                <p class="text-gray-400 text-sm">Lunes a Viernes</p>
+                            </div>
+                            
+                            <div class="schedule-item p-4 border-l-4 border-gray-600 bg-[#1a1a2e] rounded-r-lg transition-all">
+                                <div class="flex justify-between">
+                                    <span class="font-bold">2:00 PM</span>
+                                </div>
+                                <h4 class="text-lg font-medium mt-1">PURO VALLENATO</h4>
+                                <p class="text-gray-400 text-sm">Lunes a Viernes</p>
+                            </div>
+                            
+                            <div class="schedule-item p-4 border-l-4 border-gray-600 bg-[#1a1a2e] rounded-r-lg transition-all">
+                                <div class="flex justify-between">
+                                    <span class="font-bold">4:00 PM</span>
+                                </div>
+                                <h4 class="text-lg font-medium mt-1">EL VACILE DE LATARDE</h4>
+                                <p class="text-gray-400 text-sm">Miercoles, Jueves y Viernes</p>
+                            </div>
+                            
+                            <div class="schedule-item p-4 border-l-4 border-gray-600 bg-[#1a1a2e] rounded-r-lg transition-all">
+                                <div class="flex justify-between">
+                                    <span class="font-bold">6:00 PM</span>
+                                </div>
+                                <h4 class="text-lg font-medium mt-1">LA HORA DEL CACIQUE</h4>
+                                <p class="text-gray-400 text-sm">Lunes a Viernes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <button class="text-[#252524] hover:text-white hover:bg-[#252524] border border-[#252524] font-medium py-2 px-4 rounded-full transition">Ver programación completa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Nosotros -->
+        <section id="nosotros" class="py-12 px-6">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-10 text-center">Sobre <span class="text-[#252524]">Nosotros</span></h2>
+                
+                <div class="max-w-4xl mx-auto bg-[#1e293b] rounded-xl p-8">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/2">
+                            <h3 class="text-2xl font-bold mb-4">Nuestra Historia</h3>
+                            <p class="text-gray-300 mb-4">Somos una radio comprometida con ofrecer el mejor contenido y entretenimiento para nuestra audiencia. Desde nuestros inicios en 2021, nos hemos dedicado a crear una experiencia única para nuestros oyentes.</p>
+                            <p class="text-gray-300">Contamos con un equipo de profesionales apasionados por la radio y la comunicación, siempre buscando innovar y mejorar nuestra programación.</p>
+                            
+                            <div class="mt-6">
+                                <h4 class="text-xl font-bold mb-3">Nuestros Valores</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-2"><i class="fas fa-check-circle"></i></div>
+                                        <span>Calidad en cada transmisión</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-2"><i class="fas fa-check-circle"></i></div>
+                                        <span>Compromiso con nuestra audiencia</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-2"><i class="fas fa-check-circle"></i></div>
+                                        <span>Innovación constante</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-2"><i class="fas fa-check-circle"></i></div>
+                                        <span>Pasión por la música y la cultura </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="md:w-1/2">
+                            <div class="bg-[#0f172a] rounded-lg p-6 h-full flex flex-col justify-center">
+                                <div class="text-center mb-6">
+                                    <div class="inline-block p-4 rounded-full bg-[#1a1a2e] text-[#ff5e02] mb-4">
+                                        <img src="La nuestra logo.png" class="h-16 w-17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold mb-2">LA NUESTRA</h3>
+                                    <p class="text-gray-400">Nuestra Musica, Nuestro Vallenato</p>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-3"><i class="fas fa-map-marker-alt text-xl"></i></div>
+                                        <span>Kra 13 N 2F - 45</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-3"><i class="fas fa-phone text-xl"></i></div>
+                                        <span>+57 322 7133123</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="text-[#ff5e02] mr-3"><i class="fas fa-instagram text-xl"></i></div>
+                                        <span>@lanuestraonline91.7</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-center space-x-4">
+                                    <a href="https://www.facebook.com/lanuestraonlineradio/" class="bg-[#ff5e02] hover:bg-[#252524] w-10 h-10 rounded-full flex items-center justify-center transition">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="bg-[#ff5e02] hover:bg-[#6564f1] w-10 h-10 rounded-full flex items-center justify-center transition">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="https://www.instagram.com/lanuestraonline91.7/?hl=es" class="bg-[#ff5e02] hover:bg-[#252524] w-10 h-10 rounded-full flex items-center justify-center transition">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="https://www.youtube.com/watch?v=JVs5-je_5yY" class="bg-[#ff5e02] hover:bg-[#252524] w-10 h-10 rounded-full flex items-center justify-center transition">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contacto -->
+        <section id="contacto" class="py-12 px-6 bg-[#252524]">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold mb-10 text-center">Contáctanos</h2>
+                
+                <div class="max-w-3xl mx-auto bg-[#1e293b] rounded-xl p-8">
+                    <div class="mb-8 text-center">
+                        <p class="text-gray-300">¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte!</p>
+                    </div>
+                    
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium">Nombre</label>
+                                <input type="text" id="name" class="w-full p-3 bg-[#0f172a] border border-gray-700 rounded-lg focus:ring-[#6564f1] focus:border-[#6564f1]" placeholder="Tu nombre" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block mb-2 text-sm font-medium">Correo Electrónico</label>
+                                <input type="email" id="email" class="w-full p-3 bg-[#0f172a] border border-gray-700 rounded-lg focus:ring-[#6564f1] focus:border-[#6564f1]" placeholder="tu@email.com" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block mb-2 text-sm font-medium">Asunto</label>
+                            <input type="text" id="subject" class="w-full p-3 bg-[#0f172a] border border-gray-700 rounded-lg focus:ring-[#6564f1] focus:border-[#6564f1]" placeholder="Asunto de tu mensaje" required>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block mb-2 text-sm font-medium">Mensaje</label>
+                            <textarea id="message" rows="4" class="w-full p-3 bg-[#0f172a] border border-gray-700 rounded-lg focus:ring-[#6564f1] focus:border-[#6564f1]" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="bg-[#ff5e02] hover:bg-[#252524] text-white font-bold py-3 px-8 rounded-full transition">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#ff5e02] py-8 px-6 border-t border-gray-800">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="text-[#6564f1] mr-2">
+                            <img src="La nuestra logo.png" class="h-12 w-13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold">RADIO<span class="text-[#252524]"> LA NUESTRA</span></h2>
+                    </div>
+                    <p class="text-black -400 mt-2">Nuestra musica, Nuestro vallenato</p>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="https://www.facebook.com/lanuestraonlineradio/" class="text-white -400 hover:text-[#252524]">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-White -400 hover:text-[#252524]">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-white -400 hover:text-[#252524]">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-white -400 hover:text-[#252524]">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center">
+                <p class="text-white -400 text-sm">&copy; 2021 Radio la nuestra. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fecha actual
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('es-ES', options);
+        }
+        updateDate();
+        
+        // Simulación de reproductor de radio
+        const playButton = document.getElementById('playButton');
+        const stopButton = document.getElementById('stopButton');
+        const volumeControl = document.getElementById('volumeControl');
+        const audioWave = document.getElementById('audioWave');
+        let isPlaying = true;
+        let waveAnimation;
+        
+        function animateWave() {
+            const bars = audioWave.querySelectorAll('.wave-bar');
+            bars.forEach(bar => {
+                const height = Math.floor(Math.random() * 100) + '%';
+                bar.style.height = height;
+                bar.style.transition = 'height 0.2s ease';
+            });
+        }
+        
+        playButton.addEventListener('click', function() {
+            if (!isPlaying) {
+                isPlaying = true; 
+                playButton.innerHTML = '<i class="fas fa-pause mr-2"></i> Pausar';
+                playButton.classList.remove('btn-pulse');
+                stopButton.disabled = false;
+                stopButton.classList.remove('bg-gray-700');
+                stopButton.classList.add('bg-red-600', 'hover:bg-red-700');
+                
+                // Iniciar animación de ondas
+                waveAnimation = setInterval(animateWave, 200);
+                
+                // Mostrar notificación
+                showNotification('¡Transmisión iniciada!');
+            } else {
+                isPlaying = false;
+                playButton.innerHTML = '<i class="fas fa-play mr-2"></i> Reproducir';
+                playButton.classList.add('btn-pulse');
+                
+                // Detener animación de ondas
+                clearInterval(waveAnimation);
+                const bars = audioWave.querySelectorAll('.wave-bar');
+                bars.forEach((bar, index) => {
+                    const baseHeight = [20, 40, 60, 80, 40, 60, 80, 100, 80, 60, 40, 20];
+                    bar.style.height = baseHeight[index] + '%';
+                });
+                
+                // Mostrar notificación
+                showNotification('Transmisión pausada');
+            }
+        });
+        
+        stopButton.addEventListener('click', function() {
+            isPlaying = true  ;
+            playButton.innerHTML = '<i class="fas fa-play mr-2"></i> Reproducir';
+            playButton.classList.add('btn-pulse');
+            stopButton.disabled = true;
+            stopButton.classList.remove('bg-red-600', 'hover:bg-red-700');
+            stopButton.classList.add('bg-gray-700');
+            
+            // Detener animación de ondas
+            clearInterval(waveAnimation);
+            const bars = audioWave.querySelectorAll('.wave-bar');
+            bars.forEach((bar, index) => {
+                const baseHeight = [20, 40, 60, 80, 40, 60, 80, 100, 80, 60, 40, 20];
+                bar.style.height = baseHeight[index] + '%';
+            });
+            
+            // Mostrar notificación
+            showNotification('Transmisión detenida');
+        });
+        
+        volumeControl.addEventListener('input', function() {
+            // Simulación de cambio de volumen
+            const volume = this.value;
+            // Mostrar notificación
+            showNotification(`Volumen: ${volume}%`);
+        });
+        
+        // Formulario de contacto
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulación de envío de formulario
+            const name = document.getElementById('name').value;
+            showNotification(`¡Gracias ${name}! Tu mensaje ha sido enviado.`);
+            contactForm.reset();
+        });
+        
+        // Notificaciones
+        function showNotification(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-[#6564f1] text-white py-2 px-4 rounded-lg shadow-lg z-50 transition-opacity duration-300';
+            notification.textContent = message;
+            
+            // Añadir al DOM
+            document.body.appendChild(notification);
+            
+            // Eliminar después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
